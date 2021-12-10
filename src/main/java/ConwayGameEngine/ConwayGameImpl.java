@@ -1,8 +1,6 @@
 package ConwayGameEngine;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -18,8 +16,8 @@ public class ConwayGameImpl implements ConwayGame {
     private final int columns;
     private final Cell[][] grid;
 
-    private boolean isUnique;
-    private final Set<ByteArrayOutputStream> states = new HashSet<>();
+    private boolean isUnique = true;
+    private final Set<Integer> states = new HashSet<>();
 
     public ConwayGameImpl(int rows, int columns) {
         this.rows = rows;
@@ -157,17 +155,10 @@ public class ConwayGameImpl implements ConwayGame {
     }
 
     private boolean checkUnique() {
+
         if (!isUnique) return false;
-        boolean unique = true;
 
-        try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(bos);
-            oos.writeObject(grid);
-            unique = states.add(bos);
-        } catch (IOException ignored) {
-        }
-
+        boolean unique = states.add(Arrays.deepHashCode(grid));
         isUnique = unique;
         return unique;
     }
@@ -202,11 +193,8 @@ public class ConwayGameImpl implements ConwayGame {
 
     @Override
     public Memento<ConwayGame> saveToState() {
-        return null;
-    }
-
-    @Override
-    public void restoreFromState(Memento<ConwayGame> memento) {
-
+        GameMemento memento = new GameMemento();
+        memento.setState(this);
+        return memento;
     }
 }

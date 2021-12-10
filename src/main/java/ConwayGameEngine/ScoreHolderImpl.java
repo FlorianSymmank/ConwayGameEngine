@@ -4,8 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ScoreHolderImpl implements ScoreHolder {
-    private ScoreChangedListener listener;
-
+    transient private ScoreChangedListener listener;
     private final Map<String, Integer> scores = new HashMap<>();
 
     @Override

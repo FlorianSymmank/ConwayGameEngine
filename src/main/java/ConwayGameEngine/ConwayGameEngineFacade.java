@@ -3,6 +3,7 @@ package ConwayGameEngine;
 import java.util.List;
 
 public interface ConwayGameEngineFacade {
+
     ConwayGame getGame(int i);
 
     List<ConwayGame> getAllGames();
@@ -16,4 +17,6 @@ public interface ConwayGameEngineFacade {
     void deleteGames();
 
     void deleteScores();
+
+    void setDefaultDirectory(String defaultDirectory);
 }

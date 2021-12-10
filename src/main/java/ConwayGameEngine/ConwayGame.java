@@ -1,6 +1,8 @@
 package ConwayGameEngine;
 
-public interface ConwayGame extends Originator<ConwayGame> {
+import java.io.Serializable;
+
+public interface ConwayGame extends Originator<ConwayGame>, Serializable {
     Cell getCell(int row, int column);
 
     void reset();
