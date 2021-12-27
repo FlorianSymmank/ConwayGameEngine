@@ -2,14 +2,27 @@ package ConwayGameEngine;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+/**
+ * Main interaction class with the user.
+ */
 public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
 
     private String defaultDirectory = "";
     private static final String GAME_FILE_EXTENSION = ".cg";
     private static final String SCORE_FILE_EXTENSION = ".cgs";
+
+    /**
+     * Creates the facade.
+     * @param defaultDirectory the default directory to save the files to.
+     */
+    public ConwayGameEngineFacadeImpl(String defaultDirectory) {
+        this.defaultDirectory = defaultDirectory;
+    }
 
     @Override
     public ConwayGame getGame(int i) {
@@ -18,7 +31,7 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
 
     @Override
     public List<ConwayGame> getAllGames() {
-        List<ConwayGame> games = new ArrayList<>();
+        List<Memento<ConwayGame>> games = new ArrayList<>();
         for (File file : Objects.requireNonNull(new File(defaultDirectory).listFiles())) {
             if (file.isFile() && file.getName().endsWith(GAME_FILE_EXTENSION)) {
                 try {
@@ -28,7 +41,9 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
                 }
             }
         }
-        return games;
+
+        games.sort(Comparator.comparing(Memento::getDate));
+        return games.stream().map(Memento::getState).collect(Collectors.toList());
     }
 
     @Override
@@ -61,7 +76,7 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
 
     @Override
     public List<FinalScore> getAllScores() {
-        List<FinalScore> scores = new ArrayList<>();
+        List<Memento<FinalScore>> scores = new ArrayList<>();
         for (File file : Objects.requireNonNull(new File(defaultDirectory).listFiles())) {
             if (file.isFile() && file.getName().endsWith(SCORE_FILE_EXTENSION)) {
                 try {
@@ -71,7 +86,9 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
                 }
             }
         }
-        return scores;
+
+        scores.sort(Comparator.comparing(Memento::getDate));
+        return scores.stream().map(Memento::getState).collect(Collectors.toList());
     }
 
     @Override
@@ -107,7 +124,14 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
         this.defaultDirectory = defaultDirectory;
     }
 
-    private ConwayGame readConwayGame(String fileName) throws IOException, ClassNotFoundException {
+    /**
+     * Reads a ConwayGame from a file.
+     * @param fileName path to the file
+     * @return the ConwayGame
+     * @throws IOException if the file cannot be read
+     * @throws ClassNotFoundException if the file does not contain a ConwayGame
+     */
+    private Memento<ConwayGame> readConwayGame(String fileName) throws IOException, ClassNotFoundException {
         FileInputStream fin = new FileInputStream(fileName);
         ObjectInputStream ois = new ObjectInputStream(fin);
         Memento<ConwayGame> mem = (Memento<ConwayGame>) ois.readObject();
@@ -115,10 +139,17 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
         fin.close();
         ois.close();
 
-        return mem.getState();
+        return mem;
     }
 
-    private FinalScore readConwayGameScore(String fileName) throws IOException, ClassNotFoundException {
+    /**
+     * Reads a FinalScore from a file.
+     * @param fileName path to the file
+     * @return the FinalScore
+     * @throws IOException if the file cannot be read
+     * @throws ClassNotFoundException if the file does not contain a FinalScore
+     */
+    private Memento<FinalScore> readConwayGameScore(String fileName) throws IOException, ClassNotFoundException {
         FileInputStream fin = new FileInputStream(fileName);
         ObjectInputStream ois = new ObjectInputStream(fin);
         Memento<FinalScore> mem = (Memento<FinalScore>) ois.readObject();
@@ -126,6 +157,6 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
         fin.close();
         ois.close();
 
-        return mem.getState();
+        return mem;
     }
 }

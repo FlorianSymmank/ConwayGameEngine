@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+/**
+ * ConwayGameImpl
+ */
 public class ConwayGameImpl implements ConwayGame {
 
     private final static String RESURRECTION_SCORE = "RESURRECTION_SCORE";
@@ -21,6 +24,11 @@ public class ConwayGameImpl implements ConwayGame {
 
     private UniqueStateChangedListener listener;
 
+    /**
+     * Creates a new instance of ConwayGameImpl with given size. All cells are dead.
+     * @param rows number of rows
+     * @param columns number of columns
+     */
     public ConwayGameImpl(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
@@ -171,11 +179,23 @@ public class ConwayGameImpl implements ConwayGame {
         return memento;
     }
 
+    /**
+     * Checks if the game is unique.
+     * @return true if the game is unique, false otherwise.
+     */
     private boolean checkUnique() {
         if (!isUnique) return false;
+
+        // get hash of the grid(cell array) and try to add it to the states set.
+        // if the hash is already in the set, the game is not unique.
         return states.add(Arrays.deepHashCode(grid));
     }
 
+    /**
+     * Scores the game and checks if the game is unique.
+     * @param aliveToDeadCount amount of cells that died in the last generation.
+     * @param deadToAliveCount amount of cells that were resurrected in the last generation.
+     */
     private void score(int aliveToDeadCount, int deadToAliveCount) {
         if (checkUnique()) {
             scoreHolder.addScore(DEATH_SCORE, aliveToDeadCount);
@@ -186,6 +206,10 @@ public class ConwayGameImpl implements ConwayGame {
         }
     }
 
+    /**
+     * Sets the unique state of the game. Notifies the listener if the state has changed.
+     * @param unique the new unique state.
+     */
     private void setUnique(boolean unique) {
         if (unique != isUnique) {
             listener.changed(isUnique);
@@ -193,6 +217,12 @@ public class ConwayGameImpl implements ConwayGame {
         }
     }
 
+    /**
+     * Counts the amount of neighbors of a cells which are alive.
+     * @param row the row of the cell.
+     * @param column the column of the cell.
+     * @return the amount of neighbors of the cell which are alive.
+     */
     private int countAliveNeighboursOf(int row, int column) {
         int count = 0;
 
@@ -205,6 +235,12 @@ public class ConwayGameImpl implements ConwayGame {
         return count;
     }
 
+    /**
+     * Checks if a cell is alive.
+     * @param row the row of the cell.
+     * @param column the column of the cell.
+     * @return true if the cell is alive, false otherwise.
+     */
     private boolean isCellAlive(int row, int column) {
         try {
             return getCell(row, column).isAlive();
