@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,8 +16,7 @@ class ConwayGameEngineFacadeTest {
 
     @BeforeEach
     void setUp() {
-        facade = new ConwayGameEngineFacadeImpl();
-        facade.setDefaultDirectory("src/test/resources/");
+        facade = new ConwayGameEngineFacadeImpl("src/test/resources/");
     }
 
     @AfterEach
@@ -49,8 +49,8 @@ class ConwayGameEngineFacadeTest {
     @Test
     void getAllScores() {
 
-        facade.saveScore(new FinalScoreImpl(1, "Hans", LocalDate.now(), 1, 1, 1));
-        facade.saveScore(new FinalScoreImpl(2, "Meier", LocalDate.now(), 1, 1, 1));
+        facade.saveScore(new FinalScoreImpl(1, "Hans", LocalDateTime.now(), 1, 1, 1));
+        facade.saveScore(new FinalScoreImpl(2, "Meier", LocalDateTime.now(), 1, 1, 1));
 
         List<FinalScore> scores = facade.getAllScores();
         assertEquals(2, scores.size());
@@ -80,7 +80,7 @@ class ConwayGameEngineFacadeTest {
 
     @Test
     void saveScore() {
-        FinalScore score = new FinalScoreImpl(1, "Hans", LocalDate.now(), 1, 1, 1);
+        FinalScore score = new FinalScoreImpl(1, "Hans", LocalDateTime.now(), 1, 1, 1);
         facade.saveScore(score);
     }
 
