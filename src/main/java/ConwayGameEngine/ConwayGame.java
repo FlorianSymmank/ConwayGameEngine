@@ -71,4 +71,10 @@ public interface ConwayGame extends Originator<ConwayGame>, Serializable {
      * @param listener UniqueStateChangedListener to notify.
      */
     void setUniqueStateChangedListener(UniqueStateChangedListener listener);
+
+    /**
+     * Gets the final score of the game.
+     * @return the final score of the game.
+     */
+    FinalScore getFinalScore();
 }

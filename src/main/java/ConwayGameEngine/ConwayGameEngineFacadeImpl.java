@@ -124,6 +124,11 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
         this.defaultDirectory = defaultDirectory;
     }
 
+    @Override
+    public ConwayGame createGame(String playerName, int PlayerID, int width, int height) {
+        return new ConwayGameImpl(playerName, PlayerID, width, height);
+    }
+
     /**
      * Reads a ConwayGame from a file.
      * @param fileName path to the file

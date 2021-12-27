@@ -1,5 +1,6 @@
 package ConwayGameEngine;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -18,6 +19,8 @@ public class ConwayGameImpl implements ConwayGame {
     private final int rows;
     private final int columns;
     private final Cell[][] grid;
+    private final String name;
+    private final int playerID;
 
     private boolean isUnique = true;
     private final Set<Integer> states = new HashSet<>();
@@ -26,17 +29,21 @@ public class ConwayGameImpl implements ConwayGame {
 
     /**
      * Creates a new instance of ConwayGameImpl with given size. All cells are dead.
-     * @param rows number of rows
+     *
+     * @param rows    number of rows
      * @param columns number of columns
      */
-    public ConwayGameImpl(int rows, int columns) {
+    public ConwayGameImpl(String name, int playerID, int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
+        this.name = name;
+        this.playerID = playerID;
+
         grid = new Cell[rows][columns];
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
-                grid[i][j] = new CellImpl(i, j);
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < columns; col++) {
+                grid[row][col] = new CellImpl(row, col);
             }
         }
 
@@ -94,7 +101,7 @@ public class ConwayGameImpl implements ConwayGame {
         }
 
         score(aliveToDeadCount, deadToAliveCount);
-        return true;
+        return isUnique();
     }
 
     @Override
@@ -136,7 +143,7 @@ public class ConwayGameImpl implements ConwayGame {
     public Score getDeathScore() {
         Score score = null;
         try {
-            score = scoreHolder.getScore(GENERATION_SCORE);
+            score = scoreHolder.getScore(DEATH_SCORE);
         } catch (ScoreNotFoundException ignored) {
             // cant happen
         }
@@ -173,6 +180,11 @@ public class ConwayGameImpl implements ConwayGame {
     }
 
     @Override
+    public FinalScore getFinalScore() {
+        return new FinalScoreImpl(playerID, name, LocalDateTime.now(), getFinalScore().getGenerationScore(), getFinalScore().getDeathScore(), getFinalScore().getResurrectionScore());
+    }
+
+    @Override
     public Memento<ConwayGame> saveToState() {
         GameMemento memento = new GameMemento();
         memento.setState(this);
@@ -181,6 +193,7 @@ public class ConwayGameImpl implements ConwayGame {
 
     /**
      * Checks if the game is unique.
+     *
      * @return true if the game is unique, false otherwise.
      */
     private boolean checkUnique() {
@@ -193,6 +206,7 @@ public class ConwayGameImpl implements ConwayGame {
 
     /**
      * Scores the game and checks if the game is unique.
+     *
      * @param aliveToDeadCount amount of cells that died in the last generation.
      * @param deadToAliveCount amount of cells that were resurrected in the last generation.
      */
@@ -208,18 +222,20 @@ public class ConwayGameImpl implements ConwayGame {
 
     /**
      * Sets the unique state of the game. Notifies the listener if the state has changed.
+     *
      * @param unique the new unique state.
      */
     private void setUnique(boolean unique) {
         if (unique != isUnique) {
-            listener.changed(isUnique);
+            if (listener != null) listener.changed(isUnique);
             isUnique = unique;
         }
     }
 
     /**
      * Counts the amount of neighbors of a cells which are alive.
-     * @param row the row of the cell.
+     *
+     * @param row    the row of the cell.
      * @param column the column of the cell.
      * @return the amount of neighbors of the cell which are alive.
      */
@@ -237,7 +253,8 @@ public class ConwayGameImpl implements ConwayGame {
 
     /**
      * Checks if a cell is alive.
-     * @param row the row of the cell.
+     *
+     * @param row    the row of the cell.
      * @param column the column of the cell.
      * @return true if the cell is alive, false otherwise.
      */

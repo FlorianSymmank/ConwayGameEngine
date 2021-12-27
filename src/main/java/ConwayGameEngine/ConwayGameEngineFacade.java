@@ -9,6 +9,7 @@ public interface ConwayGameEngineFacade {
 
     /**
      * Returns the i-th game in the list of games (sorted by date).
+     *
      * @param i index of the game to return
      * @return
      */
@@ -16,24 +17,28 @@ public interface ConwayGameEngineFacade {
 
     /**
      * Returns the list of games (sorted by date).
+     *
      * @return List of games
      */
     List<ConwayGame> getAllGames();
 
     /**
      * Returns the list of scores (sorted by date).
+     *
      * @return List of scores
      */
     List<FinalScore> getAllScores();
 
     /**
      * Save the game to the default directory.
+     *
      * @param game game to save
      */
     void saveGame(ConwayGame game);
 
     /**
      * Save the score to the default directory.
+     *
      * @param score score to save
      */
     void saveScore(FinalScore score);
@@ -50,7 +55,19 @@ public interface ConwayGameEngineFacade {
 
     /**
      * set the default directory. All files(games/scores) will be saved in this directory.
+     *
      * @param defaultDirectory Path to the default directory
      */
     void setDefaultDirectory(String defaultDirectory);
+
+    /**
+     * Create a new game.
+     *
+     * @param playerName Name of the player
+     * @param PlayerID   ID of the player
+     * @param width      width of the game
+     * @param height     height of the game
+     * @return created game
+     */
+    ConwayGame createGame(String playerName, int PlayerID, int width, int height);
 }
