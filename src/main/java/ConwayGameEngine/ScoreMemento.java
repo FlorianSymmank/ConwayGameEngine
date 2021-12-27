@@ -1,13 +1,16 @@
 package ConwayGameEngine;
 
-public class ScoreMemento implements Memento<Score> {
+public class ScoreMemento implements Memento<FinalScore> {
+
+    private FinalScore state;
+
     @Override
-    public Score getState() {
-        return null;
+    public FinalScore getState() {
+        return state;
     }
 
     @Override
-    public void setState(Score state) {
-
+    public void setState(FinalScore state) {
+        this.state = state;
     }
 }

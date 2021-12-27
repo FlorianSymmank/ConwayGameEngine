@@ -2,6 +2,7 @@ package ConwayGameEngine;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +26,7 @@ public class ConwayGameEngineFacadeTest {
     @Test
     void getAllScores() {
         ConwayGameEngineFacade facade = new ConwayGameEngineFacadeImpl();
-        List<Score> scores = facade.getAllScores();
+        List<FinalScore> scores = facade.getAllScores();
         assertEquals(1, scores.size());
         // TODO: add more tests
     }
@@ -39,7 +40,7 @@ public class ConwayGameEngineFacadeTest {
 
     @Test
     void saveScore() {
-        Score score = new ScoreImpl("test", 1);
+        FinalScore score = new FinalScoreImpl(1, "Hans", LocalDate.now(), 1, 1, 1);
         ConwayGameEngineFacade facade = new ConwayGameEngineFacadeImpl();
         facade.saveScore(score);
     }

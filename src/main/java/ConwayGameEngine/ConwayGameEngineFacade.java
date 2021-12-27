@@ -8,11 +8,11 @@ public interface ConwayGameEngineFacade {
 
     List<ConwayGame> getAllGames();
 
-    List<Score> getAllScores();
+    List<FinalScore> getAllScores();
 
     void saveGame(ConwayGame game);
 
-    void saveScore(Score score);
+    void saveScore(FinalScore score);
 
     void deleteGames();
 
