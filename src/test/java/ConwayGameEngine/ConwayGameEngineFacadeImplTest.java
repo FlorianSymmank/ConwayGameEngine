@@ -4,13 +4,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ConwayGameEngineFacadeTest {
+class ConwayGameEngineFacadeImplTest {
 
     ConwayGameEngineFacade facade;
 
@@ -28,7 +27,7 @@ class ConwayGameEngineFacadeTest {
 
     @Test
     void getGame() {
-        ConwayGame game = new ConwayGameImpl(1, 2);
+        ConwayGame game = new ConwayGameImpl("Hannes", 1, 1, 2);
         game.getCell(0, 0).invert();
         facade.saveGame(game);
 
@@ -39,8 +38,8 @@ class ConwayGameEngineFacadeTest {
 
     @Test
     void getAllGames() {
-        facade.saveGame(new ConwayGameImpl(1, 1));
-        facade.saveGame(new ConwayGameImpl(1, 1));
+        facade.saveGame(new ConwayGameImpl("Hannes", 1, 1, 1));
+        facade.saveGame(new ConwayGameImpl("Hannes", 1, 1, 1));
 
         List<ConwayGame> games = facade.getAllGames();
         assertEquals(2, games.size());
@@ -74,7 +73,7 @@ class ConwayGameEngineFacadeTest {
 
     @Test
     void saveGame() {
-        ConwayGame game = new ConwayGameImpl(1, 1);
+        ConwayGame game = new ConwayGameImpl("Hannes", 1, 1, 1);
         facade.saveGame(game);
     }
 
