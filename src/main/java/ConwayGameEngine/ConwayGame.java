@@ -18,4 +18,6 @@ public interface ConwayGame extends Originator<ConwayGame>, Serializable {
     boolean isUnique();
 
     void setScoreChangedListener(ScoreChangedListener listener);
+
+    void setUniqueStateChangedListener(UniqueStateChangedListener listener);
 }

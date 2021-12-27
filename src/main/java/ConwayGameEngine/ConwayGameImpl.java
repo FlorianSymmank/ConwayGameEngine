@@ -19,6 +19,8 @@ public class ConwayGameImpl implements ConwayGame {
     private boolean isUnique = true;
     private final Set<Integer> states = new HashSet<>();
 
+    private UniqueStateChangedListener listener;
+
     public ConwayGameImpl(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
@@ -89,7 +91,8 @@ public class ConwayGameImpl implements ConwayGame {
 
     @Override
     public void reset() {
-        isUnique = true;
+        setUnique(true);
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 grid[i][j].die();
@@ -104,10 +107,6 @@ public class ConwayGameImpl implements ConwayGame {
         scoreHolder.addScore(GENERATION_SCORE, 0);
     }
 
-    @Override
-    public void setScoreChangedListener(ScoreChangedListener listener) {
-        scoreHolder.setScoreChangedListener(listener);
-    }
 
     @Override
     public Cell getCell(int row, int column) {
@@ -154,13 +153,27 @@ public class ConwayGameImpl implements ConwayGame {
         return isUnique;
     }
 
+
+    @Override
+    public void setScoreChangedListener(ScoreChangedListener listener) {
+        scoreHolder.setScoreChangedListener(listener);
+    }
+
+    @Override
+    public void setUniqueStateChangedListener(UniqueStateChangedListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public Memento<ConwayGame> saveToState() {
+        GameMemento memento = new GameMemento();
+        memento.setState(this);
+        return memento;
+    }
+
     private boolean checkUnique() {
-
         if (!isUnique) return false;
-
-        boolean unique = states.add(Arrays.deepHashCode(grid));
-        isUnique = unique;
-        return unique;
+        return states.add(Arrays.deepHashCode(grid));
     }
 
     private void score(int aliveToDeadCount, int deadToAliveCount) {
@@ -168,6 +181,15 @@ public class ConwayGameImpl implements ConwayGame {
             scoreHolder.addScore(DEATH_SCORE, aliveToDeadCount);
             scoreHolder.addScore(RESURRECTION_SCORE, deadToAliveCount);
             scoreHolder.addScore(GENERATION_SCORE, 1);
+        } else {
+            setUnique(false);
+        }
+    }
+
+    private void setUnique(boolean unique) {
+        if (unique != isUnique) {
+            listener.changed(isUnique);
+            isUnique = unique;
         }
     }
 
@@ -189,12 +211,5 @@ public class ConwayGameImpl implements ConwayGame {
         } catch (ArrayIndexOutOfBoundsException ex) {
             return false;
         }
-    }
-
-    @Override
-    public Memento<ConwayGame> saveToState() {
-        GameMemento memento = new GameMemento();
-        memento.setState(this);
-        return memento;
     }
 }
