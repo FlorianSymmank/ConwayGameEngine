@@ -10,13 +10,13 @@ import java.time.LocalDateTime;
 public interface Memento<T> extends Serializable {
     /**
      * gets the state of the memento
-     * @return
+     * @return state
      */
     T getState();
 
     /**
      * sets the state of the memento
-     * @param state
+     * @param state state to be set
      */
     void setState(T state);
 
