@@ -14,7 +14,7 @@ public class CellImpl implements Cell {
      * @param x x coordinate
      * @param y y coordinate
      */
-    public CellImpl(int x, int y) {
+    public CellImpl(int y, int x) {
         this.x = x;
         this.y = y;
     }
@@ -47,5 +47,29 @@ public class CellImpl implements Cell {
     @Override
     public int getY() {
         return y;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+
+        CellImpl other = (CellImpl) obj;
+        if (x != other.x) return false;
+
+        if (y != other.y) return false;
+
+        return alive == other.alive;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 7;
+        result = 31 * result + x;
+        result = 31 * result + y;
+        result = 31 * result + (alive ? 1 : 0);
+        return result;
     }
 }
