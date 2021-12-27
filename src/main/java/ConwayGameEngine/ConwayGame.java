@@ -19,8 +19,6 @@ public interface ConwayGame extends Originator<ConwayGame>, Serializable {
     /**
      * Resets the game to the initial state.
      * Includes resetting the scores, the unique state, resets cells to dead and clears the state history.
-     *
-     * @return the number of rows of the game.
      */
     void reset();
 
