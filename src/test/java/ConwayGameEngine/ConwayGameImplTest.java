@@ -11,7 +11,7 @@ class ConwayGameImplTest {
 
     @BeforeEach
     void setUp() {
-        game = new ConwayGameImpl("Hannes", 1,10, 10);
+        game = new ConwayGameImpl("Hannes", 1, 10, 10);
         game.getCell(1, 1).resurrect();
         game.getCell(2, 2).resurrect();
         game.getCell(3, 0).resurrect();
@@ -93,6 +93,84 @@ class ConwayGameImplTest {
     @Test
     void saveToState() {
         assertNotNull(game.saveToState().getState());
+    }
+
+
+    @Test
+    void changedListenerCalled() {
+
+        final boolean[] generationScoreChangedCalled = {false};
+        final boolean[] deathScoreChangedCalled = {false};
+        final boolean[] resurrectionScoreChangedCalled = {false};
+        final boolean[] clearCalled = {false};
+
+        game = new ConwayGameImpl("Hannes", 1, 10, 10);
+        game.getCell(1, 1).resurrect();
+        game.getCell(2, 2).resurrect();
+        game.getCell(3, 0).resurrect();
+        game.getCell(3, 1).resurrect();
+        game.getCell(3, 2).resurrect();
+
+        game.setScoreChangedListener(new ScoreChangedListener() {
+            @Override
+            public void changed(Score score) {
+                if (score.getName() == "RESURRECTION_SCORE") {
+                    resurrectionScoreChangedCalled[0] = true;
+                }
+                if (score.getName() == "DEATH_SCORE") {
+                    deathScoreChangedCalled[0] = true;
+                }
+                if (score.getName() == "GENERATION_SCORE") {
+                    generationScoreChangedCalled[0] = true;
+                }
+            }
+
+            @Override
+            public void cleared() {
+                clearCalled[0] = true;
+            }
+
+            @Override
+            public void removed(Score score) {
+
+            }
+        });
+
+        game.tickGeneration();
+
+        assertTrue(generationScoreChangedCalled[0]);
+        assertTrue(deathScoreChangedCalled[0]);
+        assertTrue(resurrectionScoreChangedCalled[0]);
+
+        game.reset();
+
+        assertTrue(clearCalled[0]);
+    }
+
+    @Test
+    void uniqueListenerCalled() {
+        final boolean[] uniqueChangedCalled = {false};
+
+        game = new ConwayGameImpl("Hannes", 1, 10, 10);
+        game.getCell(1, 1).resurrect();
+        game.getCell(2, 2).resurrect();
+        game.getCell(3, 0).resurrect();
+        game.getCell(3, 1).resurrect();
+        game.getCell(3, 2).resurrect();
+
+        game.setUniqueStateChangedListener(new UniqueStateChangedListener() {
+            @Override
+            public void changed(boolean newState) {
+                uniqueChangedCalled[0] = true;
+            }
+        });
+
+        while (game.tickGeneration()){
+            assertTrue(game.isUnique());
+            assertFalse(uniqueChangedCalled[0]);
+        }
+
+        assertTrue(uniqueChangedCalled[0]);
     }
 
     // quick visual test
