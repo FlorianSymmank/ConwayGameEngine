@@ -103,8 +103,6 @@ public class ConwayGameImpl implements ConwayGame {
 
     @Override
     public void reset() {
-        setUnique(true);
-
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 grid[i][j].die();
@@ -117,6 +115,8 @@ public class ConwayGameImpl implements ConwayGame {
         scoreHolder.addScore(Scores.DEATH_SCORE.toString(), 0);
         scoreHolder.addScore(Scores.RESURRECTION_SCORE.toString(), 0);
         scoreHolder.addScore(Scores.GENERATION_SCORE.toString(), 0);
+
+        setUnique(true);
     }
 
 
@@ -234,8 +234,8 @@ public class ConwayGameImpl implements ConwayGame {
      */
     private void setUnique(boolean unique) {
         if (unique != isUnique) {
-            if (listener != null) listener.changed(isUnique);
             isUnique = unique;
+            if (listener != null) listener.changed(isUnique);
         }
     }
 
