@@ -168,7 +168,7 @@ class ConwayGameImplTest {
         assertEquals(6, resScores[2]);
         assertEquals(3, genScores[2]);
 
-        System.out.println();
+        game.reset();
         assertEquals(0, deathScores[3]);
         assertEquals(0, resScores[3]);
         assertEquals(0, genScores[3]);

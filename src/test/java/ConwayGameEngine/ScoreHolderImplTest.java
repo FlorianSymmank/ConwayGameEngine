@@ -21,9 +21,6 @@ class ScoreHolderImplTest {
         assertEquals(1, scoreHolder.getScore(ConwayGame.Scores.DEATH_SCORE.toString()).getScore());
         scoreHolder.addScore(ConwayGame.Scores.DEATH_SCORE.toString(), 1);
         assertEquals(2, scoreHolder.getScore(ConwayGame.Scores.DEATH_SCORE.toString()).getScore());
-
-        System.out.println();
-
         assertThrows(ScoreNotFoundException.class, () -> scoreHolder.getScore("Hannes2"));
     }
 
