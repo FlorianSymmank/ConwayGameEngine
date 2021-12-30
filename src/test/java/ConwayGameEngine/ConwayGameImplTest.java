@@ -99,9 +99,15 @@ class ConwayGameImplTest {
     @Test
     void changedListenerCalled() {
 
-        final boolean[] generationScoreChangedCalled = {false};
-        final boolean[] deathScoreChangedCalled = {false};
-        final boolean[] resurrectionScoreChangedCalled = {false};
+        final int[] deathScores = new int[4];
+        final int[] deathScoreIndex = {0};
+
+        final int[] genScores = new int[4];
+        final int[] genScoreIndex = {0};
+
+        final int[] resScores = new int[4];
+        final int[] resScoreIndex = {0};
+
         final boolean[] clearCalled = {false};
 
         game = new ConwayGameImpl("Hannes", 1, 10, 10);
@@ -111,18 +117,28 @@ class ConwayGameImplTest {
         game.getCell(3, 1).resurrect();
         game.getCell(3, 2).resurrect();
 
+        final int[] deathScoreChangedCalledCount = {0};
+
         game.setScoreChangedListener(new ScoreChangedListener() {
             @Override
             public void changed(Score score) {
-                if (score.getName() == "RESURRECTION_SCORE") {
-                    resurrectionScoreChangedCalled[0] = true;
+
+                if (score.getName().equals(ConwayGame.Scores.DEATH_SCORE.toString())) {
+                    deathScores[deathScoreIndex[0]] += score.getScore();
+                    deathScoreIndex[0]++;
                 }
-                if (score.getName() == "DEATH_SCORE") {
-                    deathScoreChangedCalled[0] = true;
+
+                if (score.getName().equals(ConwayGame.Scores.GENERATION_SCORE.toString())) {
+                    genScores[genScoreIndex[0]] += score.getScore();
+                    genScoreIndex[0]++;
                 }
-                if (score.getName() == "GENERATION_SCORE") {
-                    generationScoreChangedCalled[0] = true;
+
+                if (score.getName().equals(ConwayGame.Scores.RESURRECTION_SCORE.toString())) {
+                    resScores[resScoreIndex[0]] += score.getScore();
+                    resScoreIndex[0]++;
                 }
+
+
             }
 
             @Override
@@ -137,12 +153,25 @@ class ConwayGameImplTest {
         });
 
         game.tickGeneration();
+        assertEquals(2, deathScores[0]);
+        assertEquals(2, resScores[0]);
+        assertEquals(1, genScores[0]);
 
-        assertTrue(generationScoreChangedCalled[0]);
-        assertTrue(deathScoreChangedCalled[0]);
-        assertTrue(resurrectionScoreChangedCalled[0]);
+        game.tickGeneration();
+        System.out.println();
+        assertEquals(4, deathScores[1]);
+        assertEquals(4, resScores[1]);
+        assertEquals(2, genScores[1]);
 
-        game.reset();
+        game.tickGeneration();
+        assertEquals(6, deathScores[2]);
+        assertEquals(6, resScores[2]);
+        assertEquals(3, genScores[2]);
+
+        System.out.println();
+        assertEquals(0, deathScores[3]);
+        assertEquals(0, resScores[3]);
+        assertEquals(0, genScores[3]);
 
         assertTrue(clearCalled[0]);
     }
@@ -165,7 +194,7 @@ class ConwayGameImplTest {
             }
         });
 
-        while (game.tickGeneration()){
+        while (game.tickGeneration()) {
             assertTrue(game.isUnique());
             assertFalse(uniqueChangedCalled[0]);
         }

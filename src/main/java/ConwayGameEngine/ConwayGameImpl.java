@@ -11,9 +11,6 @@ import java.util.Set;
  */
 public class ConwayGameImpl implements ConwayGame {
 
-    private final static String RESURRECTION_SCORE = "RESURRECTION_SCORE";
-    private final static String DEATH_SCORE = "DEATH_SCORE";
-    private final static String GENERATION_SCORE = "GENERATION_SCORE";
     private final ScoreHolder scoreHolder = new ScoreHolderImpl();
 
     private final int rows;
@@ -47,9 +44,9 @@ public class ConwayGameImpl implements ConwayGame {
             }
         }
 
-        scoreHolder.addScore(DEATH_SCORE, 0);
-        scoreHolder.addScore(RESURRECTION_SCORE, 0);
-        scoreHolder.addScore(GENERATION_SCORE, 0);
+        scoreHolder.addScore(Scores.DEATH_SCORE.toString(), 0);
+        scoreHolder.addScore(Scores.RESURRECTION_SCORE.toString(), 0);
+        scoreHolder.addScore(Scores.GENERATION_SCORE.toString(), 0);
     }
 
     @Override
@@ -117,9 +114,9 @@ public class ConwayGameImpl implements ConwayGame {
         states.clear();
 
         scoreHolder.clear();
-        scoreHolder.addScore(DEATH_SCORE, 0);
-        scoreHolder.addScore(RESURRECTION_SCORE, 0);
-        scoreHolder.addScore(GENERATION_SCORE, 0);
+        scoreHolder.addScore(Scores.DEATH_SCORE.toString(), 0);
+        scoreHolder.addScore(Scores.RESURRECTION_SCORE.toString(), 0);
+        scoreHolder.addScore(Scores.GENERATION_SCORE.toString(), 0);
     }
 
 
@@ -132,7 +129,7 @@ public class ConwayGameImpl implements ConwayGame {
     public Score getGenerationScore() {
         Score score = null;
         try {
-            score = scoreHolder.getScore(GENERATION_SCORE);
+            score = scoreHolder.getScore(Scores.GENERATION_SCORE.toString());
         } catch (ScoreNotFoundException ignored) {
             // cant happen
         }
@@ -143,7 +140,7 @@ public class ConwayGameImpl implements ConwayGame {
     public Score getDeathScore() {
         Score score = null;
         try {
-            score = scoreHolder.getScore(DEATH_SCORE);
+            score = scoreHolder.getScore(Scores.DEATH_SCORE.toString());
         } catch (ScoreNotFoundException ignored) {
             // cant happen
         }
@@ -155,7 +152,7 @@ public class ConwayGameImpl implements ConwayGame {
     public Score getResurrectionScore() {
         Score score = null;
         try {
-            score = scoreHolder.getScore(RESURRECTION_SCORE);
+            score = scoreHolder.getScore(Scores.RESURRECTION_SCORE.toString());
         } catch (ScoreNotFoundException e) {
             // cant happen
         }
@@ -182,6 +179,16 @@ public class ConwayGameImpl implements ConwayGame {
     @Override
     public FinalScore getFinalScore() {
         return new FinalScoreImpl(playerID, name, LocalDateTime.now(), getFinalScore().getGenerationScore(), getFinalScore().getDeathScore(), getFinalScore().getResurrectionScore());
+    }
+
+    @Override
+    public int getRows() {
+        return rows;
+    }
+
+    @Override
+    public int getColumns() {
+        return columns;
     }
 
     @Override
@@ -212,9 +219,9 @@ public class ConwayGameImpl implements ConwayGame {
      */
     private void score(int aliveToDeadCount, int deadToAliveCount) {
         if (checkUnique()) {
-            scoreHolder.addScore(DEATH_SCORE, aliveToDeadCount);
-            scoreHolder.addScore(RESURRECTION_SCORE, deadToAliveCount);
-            scoreHolder.addScore(GENERATION_SCORE, 1);
+            scoreHolder.addScore(Scores.DEATH_SCORE.toString(), aliveToDeadCount);
+            scoreHolder.addScore(Scores.RESURRECTION_SCORE.toString(), deadToAliveCount);
+            scoreHolder.addScore(Scores.GENERATION_SCORE.toString(), 1);
         } else {
             setUnique(false);
         }

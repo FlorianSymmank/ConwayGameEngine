@@ -6,6 +6,13 @@ import java.io.Serializable;
  * Represents the game of life. It's a 2D Board of cells, which interact with each other to generate a new generation.
  */
 public interface ConwayGame extends Originator<ConwayGame>, Serializable {
+
+    enum Scores {
+        RESURRECTION_SCORE,
+        DEATH_SCORE,
+        GENERATION_SCORE
+    }
+
     /**
      * Returns the cell at the given coordinates.
      *
@@ -77,4 +84,16 @@ public interface ConwayGame extends Originator<ConwayGame>, Serializable {
      * @return the final score of the game.
      */
     FinalScore getFinalScore();
+
+    /**
+     * Returns the number of rows of the game.
+     * @return the number of rows of the game.
+     */
+    int getRows();
+
+    /**
+     * Returns the number of columns of the game.
+     * @return the number of columns of the game.
+     */
+    int getColumns();
 }

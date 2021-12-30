@@ -18,7 +18,13 @@ public class ScoreHolderImpl implements ScoreHolder {
     @Override
     public void addScore(String name, int score) {
         scores.put(name, scores.getOrDefault(name, 0) + score);
-        if (listener != null) listener.changed(new ScoreImpl(name, score));
+        if (listener != null) {
+            try {
+                listener.changed(getScore(name));
+            } catch (ScoreNotFoundException ignored) {
+                // we just added this score, so it should be there
+            }
+        }
     }
 
     @Override

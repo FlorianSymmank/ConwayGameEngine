@@ -16,11 +16,13 @@ class ScoreHolderImplTest {
 
     @Test
     void addScore() throws ScoreNotFoundException {
-        scoreHolder.addScore("Hannes", 1);
+        scoreHolder.addScore(ConwayGame.Scores.DEATH_SCORE.toString(), 1);
         assertEquals(1, scoreHolder.getScores().size());
-        assertEquals(1, scoreHolder.getScore("Hannes").getScore());
-        scoreHolder.addScore("Hannes", 1);
-        assertEquals(2, scoreHolder.getScore("Hannes").getScore());
+        assertEquals(1, scoreHolder.getScore(ConwayGame.Scores.DEATH_SCORE.toString()).getScore());
+        scoreHolder.addScore(ConwayGame.Scores.DEATH_SCORE.toString(), 1);
+        assertEquals(2, scoreHolder.getScore(ConwayGame.Scores.DEATH_SCORE.toString()).getScore());
+
+        System.out.println();
 
         assertThrows(ScoreNotFoundException.class, () -> scoreHolder.getScore("Hannes2"));
     }
