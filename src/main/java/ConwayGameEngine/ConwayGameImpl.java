@@ -178,7 +178,7 @@ public class ConwayGameImpl implements ConwayGame {
 
     @Override
     public FinalScore getFinalScore() {
-        return new FinalScoreImpl(playerID, name, LocalDateTime.now(), getFinalScore().getGenerationScore(), getFinalScore().getDeathScore(), getFinalScore().getResurrectionScore());
+        return new FinalScoreImpl(playerID, name, LocalDateTime.now(), getGenerationScore().getScore(), getDeathScore().getScore(), getResurrectionScore().getScore());
     }
 
     @Override
