@@ -72,7 +72,36 @@ class ConwayGameEngineFacadeImplTest {
 
     @Test
     void saveGame() throws IOException {
-        ConwayGame game = new ConwayGameImpl("Hannes", 1, 1, 1);
+        ConwayGame game = new ConwayGameImpl("Hannes", 1, 5, 5);
+        game.setUniqueStateChangedListener(new UniqueStateChangedListener() {
+            @Override
+            public void uniqueChanged(boolean newState) {
+
+            }
+        });
+
+        game.getCell(1, 1).resurrect();
+        game.getCell(2, 2).resurrect();
+        game.getCell(3, 0).resurrect();
+        game.getCell(3, 1).resurrect();
+        game.getCell(3, 2).resurrect();
+
+        game.setScoreChangedListener(new ScoreChangedListener() {
+            @Override
+            public void scoreChanged(Score score) {
+
+            }
+
+            @Override
+            public void scoreCleared() {
+
+            }
+
+            @Override
+            public void scoreRemoved(Score score) {
+
+            }
+        });
         facade.saveGame(game);
     }
 

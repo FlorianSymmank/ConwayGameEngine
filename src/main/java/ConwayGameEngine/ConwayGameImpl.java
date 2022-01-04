@@ -22,7 +22,7 @@ public class ConwayGameImpl implements ConwayGame {
     private boolean isUnique = true;
     private final Set<Integer> states = new HashSet<>();
 
-    private UniqueStateChangedListener listener;
+    transient private UniqueStateChangedListener listener;
 
     /**
      * Creates a new instance of ConwayGameImpl with given size. All cells are dead.
