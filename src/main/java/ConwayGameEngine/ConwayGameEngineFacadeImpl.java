@@ -18,25 +18,26 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
 
     /**
      * Creates the facade.
+     *
      * @param defaultDirectory the default directory to save the files to.
      */
     public ConwayGameEngineFacadeImpl(String defaultDirectory) {
-        this.defaultDirectory = defaultDirectory;
+        setDefaultDirectory(defaultDirectory);
     }
 
     @Override
-    public ConwayGame getGame(int i) {
+    public ConwayGame getGame(int i) throws IOException {
         return getAllGames().get(i);
     }
 
     @Override
-    public List<ConwayGame> getAllGames() {
+    public List<ConwayGame> getAllGames() throws IOException {
         List<Memento<ConwayGame>> games = new ArrayList<>();
         for (File file : Objects.requireNonNull(new File(defaultDirectory).listFiles())) {
             if (file.isFile() && file.getName().endsWith(GAME_FILE_EXTENSION)) {
                 try {
                     games.add(readConwayGame(file.getAbsolutePath()));
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (ClassNotFoundException e) {
 
                 }
             }
@@ -47,22 +48,18 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
     }
 
     @Override
-    public void saveGame(ConwayGame game) {
-        try {
-            Memento<ConwayGame> mem = game.saveToState();
-            String filename = defaultDirectory + "game" + System.currentTimeMillis() + GAME_FILE_EXTENSION;
+    public void saveGame(ConwayGame game) throws IOException {
 
-            FileOutputStream fout = new FileOutputStream(filename);
-            ObjectOutputStream oos = new ObjectOutputStream(fout);
+        Memento<ConwayGame> mem = game.saveToState();
+        String filename = defaultDirectory + "game" + System.currentTimeMillis() + GAME_FILE_EXTENSION;
 
-            oos.writeObject(mem);
+        FileOutputStream fout = new FileOutputStream(filename);
+        ObjectOutputStream oos = new ObjectOutputStream(fout);
 
-            fout.close();
-            oos.close();
+        oos.writeObject(mem);
 
-        } catch (IOException e) {
-
-        }
+        fout.close();
+        oos.close();
     }
 
     @Override
@@ -75,13 +72,13 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
     }
 
     @Override
-    public List<FinalScore> getAllScores() {
+    public List<FinalScore> getAllScores() throws IOException {
         List<Memento<FinalScore>> scores = new ArrayList<>();
         for (File file : Objects.requireNonNull(new File(defaultDirectory).listFiles())) {
             if (file.isFile() && file.getName().endsWith(SCORE_FILE_EXTENSION)) {
                 try {
                     scores.add(readConwayGameScore(file.getAbsolutePath()));
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (ClassNotFoundException e) {
 
                 }
             }
@@ -92,22 +89,17 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
     }
 
     @Override
-    public void saveScore(FinalScore score) {
-        try {
-            Memento<FinalScore> mem = score.saveToState();
-            String filename = defaultDirectory + "score" + System.currentTimeMillis() + SCORE_FILE_EXTENSION;
+    public void saveScore(FinalScore score) throws IOException {
+        Memento<FinalScore> mem = score.saveToState();
+        String filename = defaultDirectory + "score" + System.currentTimeMillis() + SCORE_FILE_EXTENSION;
 
-            FileOutputStream fout = new FileOutputStream(filename);
-            ObjectOutputStream oos = new ObjectOutputStream(fout);
+        FileOutputStream fout = new FileOutputStream(filename);
+        ObjectOutputStream oos = new ObjectOutputStream(fout);
 
-            oos.writeObject(mem);
+        oos.writeObject(mem);
 
-            fout.close();
-            oos.close();
-
-        } catch (IOException e) {
-
-        }
+        fout.close();
+        oos.close();
     }
 
     @Override
@@ -121,6 +113,9 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
 
     @Override
     public void setDefaultDirectory(String defaultDirectory) {
+        if (!defaultDirectory.endsWith("/"))
+            defaultDirectory += "/";
+
         this.defaultDirectory = defaultDirectory;
     }
 
@@ -131,9 +126,10 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
 
     /**
      * Reads a ConwayGame from a file.
+     *
      * @param fileName path to the file
      * @return the ConwayGame
-     * @throws IOException if the file cannot be read
+     * @throws IOException            if the file cannot be read
      * @throws ClassNotFoundException if the file does not contain a ConwayGame
      */
     private Memento<ConwayGame> readConwayGame(String fileName) throws IOException, ClassNotFoundException {
@@ -149,9 +145,10 @@ public class ConwayGameEngineFacadeImpl implements ConwayGameEngineFacade {
 
     /**
      * Reads a FinalScore from a file.
+     *
      * @param fileName path to the file
      * @return the FinalScore
-     * @throws IOException if the file cannot be read
+     * @throws IOException            if the file cannot be read
      * @throws ClassNotFoundException if the file does not contain a FinalScore
      */
     private Memento<FinalScore> readConwayGameScore(String fileName) throws IOException, ClassNotFoundException {

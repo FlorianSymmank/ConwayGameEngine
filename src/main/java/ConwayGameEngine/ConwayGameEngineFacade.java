@@ -1,5 +1,6 @@
 package ConwayGameEngine;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -11,37 +12,37 @@ public interface ConwayGameEngineFacade {
      * Returns the i-th game in the list of games (sorted by date).
      *
      * @param i index of the game to return
-     * @return
+     * @return i-th game
      */
-    ConwayGame getGame(int i);
+    ConwayGame getGame(int i) throws IOException;
 
     /**
      * Returns the list of games (sorted by date).
      *
      * @return List of games
      */
-    List<ConwayGame> getAllGames();
+    List<ConwayGame> getAllGames() throws IOException;
 
     /**
      * Returns the list of scores (sorted by date).
      *
      * @return List of scores
      */
-    List<FinalScore> getAllScores();
+    List<FinalScore> getAllScores() throws IOException;
 
     /**
      * Save the game to the default directory.
      *
      * @param game game to save
      */
-    void saveGame(ConwayGame game);
+    void saveGame(ConwayGame game) throws IOException;
 
     /**
      * Save the score to the default directory.
      *
      * @param score score to save
      */
-    void saveScore(FinalScore score);
+    void saveScore(FinalScore score) throws IOException;
 
     /**
      * delete all games in the default directory.

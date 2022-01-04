@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,20 +25,18 @@ class ConwayGameEngineFacadeImplTest {
         facade.deleteScores();
     }
 
-
     @Test
-    void getGame() {
+    void getGame() throws IOException {
         ConwayGame game = new ConwayGameImpl("Hannes", 1, 1, 2);
         game.getCell(0, 0).invert();
         facade.saveGame(game);
 
         assertEquals(game.getCell(0, 0).isAlive(), facade.getGame(0).getCell(0, 0).isAlive());
         assertEquals(game.getCell(0, 1).isAlive(), facade.getGame(0).getCell(0, 1).isAlive());
-
     }
 
     @Test
-    void getAllGames() {
+    void getAllGames() throws IOException {
         facade.saveGame(new ConwayGameImpl("Hannes", 1, 1, 1));
         facade.saveGame(new ConwayGameImpl("Hannes", 1, 1, 1));
 
@@ -46,7 +45,7 @@ class ConwayGameEngineFacadeImplTest {
     }
 
     @Test
-    void getAllScores() {
+    void getAllScores() throws IOException {
 
         facade.saveScore(new FinalScoreImpl(1, "Hans", LocalDateTime.now(), 1, 1, 1));
         facade.saveScore(new FinalScoreImpl(2, "Meier", LocalDateTime.now(), 1, 1, 1));
@@ -72,13 +71,13 @@ class ConwayGameEngineFacadeImplTest {
     }
 
     @Test
-    void saveGame() {
+    void saveGame() throws IOException {
         ConwayGame game = new ConwayGameImpl("Hannes", 1, 1, 1);
         facade.saveGame(game);
     }
 
     @Test
-    void saveScore() {
+    void saveScore() throws IOException {
         FinalScore score = new FinalScoreImpl(1, "Hans", LocalDateTime.now(), 1, 1, 1);
         facade.saveScore(score);
     }
