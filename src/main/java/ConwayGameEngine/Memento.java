@@ -22,7 +22,7 @@ public interface Memento<T> extends Serializable {
 
     /**
      * gets the last change date of the memento
-     * @return
+     * @return last change date
      */
     LocalDateTime getDate();
 }
