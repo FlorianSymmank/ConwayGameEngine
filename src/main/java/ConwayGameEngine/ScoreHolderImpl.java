@@ -20,7 +20,7 @@ public class ScoreHolderImpl implements ScoreHolder {
         scores.put(name, scores.getOrDefault(name, 0) + score);
         if (listener != null) {
             try {
-                listener.changed(getScore(name));
+                listener.scoreChanged(getScore(name));
             } catch (ScoreNotFoundException ignored) {
                 // we just added this score, so it should be there
             }
@@ -46,14 +46,14 @@ public class ScoreHolderImpl implements ScoreHolder {
     @Override
     public void clear() {
         scores.clear();
-        if (listener != null) listener.cleared();
+        if (listener != null) listener.scoreCleared();
     }
 
     @Override
     public void removeScore(String name) {
         if (scores.containsKey(name)) {
             int score = scores.get(name);
-            if (listener != null) listener.removed(new ScoreImpl(name, score));
+            if (listener != null) listener.scoreRemoved(new ScoreImpl(name, score));
         }
         scores.remove(name);
     }

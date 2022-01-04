@@ -8,16 +8,16 @@ public interface ScoreChangedListener {
      * Called when the score changes.
      * @param score the new changed score
      */
-    void changed(Score score);
+    void scoreChanged(Score score);
 
     /**
      * Called when a score is cleared.
      */
-    void cleared();
+    void scoreCleared();
 
     /**
      * Called when a score is removed.
      * @param score the score that was removed
      */
-    void removed(Score score);
+    void scoreRemoved(Score score);
 }

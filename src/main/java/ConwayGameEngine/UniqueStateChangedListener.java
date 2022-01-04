@@ -9,5 +9,5 @@ public interface UniqueStateChangedListener {
      *
      * @param newState The new unique state.
      */
-    void changed(boolean newState);
+    void uniqueChanged(boolean newState);
 }

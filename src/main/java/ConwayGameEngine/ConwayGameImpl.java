@@ -235,7 +235,7 @@ public class ConwayGameImpl implements ConwayGame {
     private void setUnique(boolean unique) {
         if (unique != isUnique) {
             isUnique = unique;
-            if (listener != null) listener.changed(isUnique);
+            if (listener != null) listener.uniqueChanged(isUnique);
         }
     }
 

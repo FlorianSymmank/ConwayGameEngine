@@ -121,7 +121,7 @@ class ConwayGameImplTest {
 
         game.setScoreChangedListener(new ScoreChangedListener() {
             @Override
-            public void changed(Score score) {
+            public void scoreChanged(Score score) {
 
                 if (score.getName().equals(ConwayGame.Scores.DEATH_SCORE.toString())) {
                     deathScores[deathScoreIndex[0]] += score.getScore();
@@ -142,12 +142,12 @@ class ConwayGameImplTest {
             }
 
             @Override
-            public void cleared() {
+            public void scoreCleared() {
                 clearCalled[0] = true;
             }
 
             @Override
-            public void removed(Score score) {
+            public void scoreRemoved(Score score) {
 
             }
         });
@@ -189,7 +189,7 @@ class ConwayGameImplTest {
 
         game.setUniqueStateChangedListener(new UniqueStateChangedListener() {
             @Override
-            public void changed(boolean newState) {
+            public void uniqueChanged(boolean newState) {
                 uniqueChangedCalled[0] = true;
             }
         });
