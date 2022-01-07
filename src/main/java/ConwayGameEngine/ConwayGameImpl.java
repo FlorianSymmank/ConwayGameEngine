@@ -18,10 +18,9 @@ public class ConwayGameImpl implements ConwayGame {
     private final Cell[][] grid;
     private final String name;
     private final int playerID;
-
-    private boolean isUnique = true;
     private final Set<Integer> states = new HashSet<>();
-
+    private String gameName = "";
+    private boolean isUnique = true;
     transient private UniqueStateChangedListener listener;
 
     /**
@@ -52,8 +51,7 @@ public class ConwayGameImpl implements ConwayGame {
     @Override
     public boolean tickGeneration() {
 
-        if (!isUnique)
-            return false;
+        if (!isUnique) return false;
 
         LinkedList<Cell> aliveCells = new LinkedList<Cell>();
         LinkedList<Cell> deadCells = new LinkedList<Cell>();
@@ -119,7 +117,6 @@ public class ConwayGameImpl implements ConwayGame {
         setUnique(true);
     }
 
-
     @Override
     public Cell getCell(int row, int column) {
         return grid[row][column];
@@ -165,6 +162,17 @@ public class ConwayGameImpl implements ConwayGame {
         return isUnique;
     }
 
+    /**
+     * Sets the unique state of the game. Notifies the listener if the state has changed.
+     *
+     * @param unique the new unique state.
+     */
+    private void setUnique(boolean unique) {
+        if (unique != isUnique) {
+            isUnique = unique;
+            if (listener != null) listener.uniqueChanged(isUnique);
+        }
+    }
 
     @Override
     public void setScoreChangedListener(ScoreChangedListener listener) {
@@ -189,6 +197,16 @@ public class ConwayGameImpl implements ConwayGame {
     @Override
     public int getColumns() {
         return columns;
+    }
+
+    @Override
+    public void setName(String name) {
+        gameName = name;
+    }
+
+    @Override
+    public String getName() {
+        return gameName;
     }
 
     @Override
@@ -224,18 +242,6 @@ public class ConwayGameImpl implements ConwayGame {
             scoreHolder.addScore(Scores.GENERATION_SCORE.toString(), 1);
         } else {
             setUnique(false);
-        }
-    }
-
-    /**
-     * Sets the unique state of the game. Notifies the listener if the state has changed.
-     *
-     * @param unique the new unique state.
-     */
-    private void setUnique(boolean unique) {
-        if (unique != isUnique) {
-            isUnique = unique;
-            if (listener != null) listener.uniqueChanged(isUnique);
         }
     }
 

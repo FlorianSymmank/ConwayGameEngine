@@ -7,12 +7,6 @@ import java.io.Serializable;
  */
 public interface ConwayGame extends Originator<ConwayGame>, Serializable {
 
-    enum Scores {
-        RESURRECTION_SCORE,
-        DEATH_SCORE,
-        GENERATION_SCORE
-    }
-
     /**
      * Returns the cell at the given coordinates.
      *
@@ -81,19 +75,43 @@ public interface ConwayGame extends Originator<ConwayGame>, Serializable {
 
     /**
      * Gets the final score of the game.
+     *
      * @return the final score of the game.
      */
     FinalScore getFinalScore();
 
     /**
      * Returns the number of rows of the game.
+     *
      * @return the number of rows of the game.
      */
     int getRows();
 
     /**
      * Returns the number of columns of the game.
+     *
      * @return the number of columns of the game.
      */
     int getColumns();
+
+    /**
+     * Gets the name of the game.
+     *
+     * @return the name of the game.
+     */
+    String getName();
+
+    /**
+     * Sets the name of the game.
+     *
+     * @return the name of the game.
+     */
+    void setName(String name);
+
+    /**
+     * Scoretypes for the game.
+     */
+    enum Scores {
+        RESURRECTION_SCORE, DEATH_SCORE, GENERATION_SCORE
+    }
 }
